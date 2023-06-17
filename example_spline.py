@@ -1,45 +1,60 @@
-from spline.spline import Spline
+from spline.spline import Spline, Spline2D
 import matplotlib.pyplot as plt
 import numpy as np
 
-a = [0, 3]
-b = [0.5, 10]
-c = [1, 5]
-d = [1.5, 7]
 
-p = [a, b, c, d]
+a = [0, 0]
+b = [10, 20]
+c = [15, 4]
+d = [20, -5]
+e = [15, 3]
+f = [10, 3]
+g = [5, 3]
 
-s = Spline(p, precision=4)
-sol = s.calculate()
+# p = [a, b, c, d, e, f]
+p = [a, b, c, d, e, f, g]
 
-print(sol)
+# para 2D, temos x(t) e y(t)
 
-curve_resolution = 0.01
+# logo, os pontos
+# a = [0, 0]
+# b = [-2, 2]
+# c = [0, 4]
+# sao representados como:
 
-x = []
-y = []
+# ta = 0
+# tb = 100
+# tc = 200
 
-# from point b to point c
-for i in np.arange(a[0], b[0], curve_resolution):
+# ax = [ta, 0]
+# bx = [tb, -2]
+# cx = [tc, 0]
 
-    x.append(i)
-    y.append(sol[0][0] + sol[0][1]*i + sol[0][2]*i**2 + sol[0][3]*i**3)
+# ay = [ta, 0]
+# by = [tb, 2]
+# cy = [tc, 4]
 
-# from point b to point c
-for i in np.arange(b[0], c[0], curve_resolution):
+# px = [ax, bx, cx]
+# py = [ay, by, cy]
 
-    x.append(i)
-    y.append(sol[1][0] + sol[1][1]*i + sol[1][2]*i**2 + sol[1][3]*i**3)
+# sx = Spline(px, resolution=0.01, precision=4)
+# sy = Spline(py, resolution=0.01, precision=4)
 
-# from point c to point d
-for i in np.arange(c[0], d[0], curve_resolution):
+# sx.calculate()
+# sy.calculate()
 
-    x.append(i)
-    y.append(sol[2][0] + sol[2][1]*i + sol[2][2]*i**2 + sol[2][3]*i**3)
+s = Spline2D(p, 0.01, 1)
+s.calculate()
 
-plt.plot(x, y)
+# print(len(sx.points_spline_y))
+# print(len(sy.points_spline_y))
+# plt.plot(s.points_spline_x, s.points_spline_y, marker="o", markersize=0.01)
+# plt.scatter(sx.points_spline_y, sy.points_spline_y, s=2)
+plt.scatter(s.points_spline_x, s.points_spline_y, s=2)
 plt.plot(a[0], a[1], marker="o", color="red")
 plt.plot(b[0], b[1], marker="o", color="red")
 plt.plot(c[0], c[1], marker="o", color="red")
 plt.plot(d[0], d[1], marker="o", color="red")
+plt.plot(e[0], e[1], marker="o", color="red")
+plt.plot(f[0], f[1], marker="o", color="red")
 plt.show()

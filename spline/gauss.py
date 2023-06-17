@@ -62,12 +62,18 @@ class Gauss:
     def _gauss_iteration(self):
 
         pivot_index = 0
-        
+        last_pivot_index = 0
+        times = 0
         # run diagonal
         while pivot_index < self.line_amount -1:
 
             self._ordering_matrix()
 
+            if pivot_index == last_pivot_index:
+
+                times = times +1
+
+            
             
             # self.print_matrix(self.m_aum)
             pivot = self.m_aum[pivot_index][pivot_index]
@@ -81,7 +87,8 @@ class Gauss:
                     if line > pivot_index:
                         
                         # if item below pivot is not zero
-                        if self.m_aum[line][pivot_index] != 0:
+                        if self.m_aum[line][pivot_index] != 0.0:
+
                             
                             all_el_zero_below_pivot = False
                             el_below_pivot = self.m_aum[line][pivot_index]
@@ -91,13 +98,37 @@ class Gauss:
                             # run cols in line calculating
                             for col in range(self.col_aum_amount):
                                 
-                                # self.m_aum[line][col] = round(self.m_aum[line][col] - factor * self.m_aum[pivot_index][col], (self.precision+1))
-                                self.m_aum[line][col] = self.m_aum[line][col] - factor * self.m_aum[pivot_index][col]
+                                self.m_aum[line][col] = round(self.m_aum[line][col] - factor * self.m_aum[pivot_index][col], (self.precision+1))
+                                # self.m_aum[line][col] = self.m_aum[line][col] - factor * self.m_aum[pivot_index][col]
+            
+
+            # if times >= 10:
+            #     print(f"pivot index: {pivot_index}/{self.line_amount -1}")
+            #     self.print_matrix(self.m_aum)
+            #     print("pivot:", self.m_aum[pivot_index][pivot_index])
+            #     print("pivot line:", self.m_aum[pivot_index])
+            #     print("all_el_zero_below_pivot:", all_el_zero_below_pivot)
+            #     print("pivot lines:")
+            #     for line in range(self.line_amount):
+
+            #         if line == pivot_index:
+            #             print(f"{self.m_aum[line][pivot_index]}<---")
+            #         else:
+            #             print(self.m_aum[line][pivot_index])
+                    
+            #         if self.m_aum[line][pivot_index] != 0:
+
+            #             print("el != 0 -> ",self.m_aum[line][pivot_index])
+
+            #     # break
+
 
             # if end lines and all el below pivot are zero...
             if all_el_zero_below_pivot:
-
+                # print("plus pivot")
                 pivot_index = pivot_index + 1
+
+            last_pivot_index = pivot_index
 
     
     def _retroactive_resolution(self):
@@ -123,13 +154,13 @@ class Gauss:
             
             if dep_term != 0:
                 
-                solution[line] = y_plus_sum_ind_terms/dep_term
-                # solution[line] = round(y_plus_sum_ind_terms/dep_term, self.precision + 1)
+                # solution[line] = y_plus_sum_ind_terms/dep_term
+                solution[line] = round(y_plus_sum_ind_terms/dep_term, self.precision + 1)
 
             else:
                 
-                # solution[line] = round(y_plus_sum_ind_terms, self.precision + 1)
-                solution[line] = y_plus_sum_ind_terms
+                solution[line] = round(y_plus_sum_ind_terms, self.precision + 1)
+                # solution[line] = y_plus_sum_ind_terms
             
         
         self.solution = solution
@@ -137,8 +168,11 @@ class Gauss:
 
     def solve(self):
 
+        print("gauss: calculating aum matrix...")
         self._calc_aum()
+        print("gauss: applying gauss method...")
         self._gauss_iteration()
+        print("gauss: applying retroactive resolution...")
         self._retroactive_resolution()
 
         return self.solution   
