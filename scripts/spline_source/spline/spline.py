@@ -60,8 +60,17 @@ import numpy as np
 
 class Spline2D:
 
-    def __init__(self, points, resolution=0.01, precision= 4):
+    def __init__(self, points=[], resolution=0.01, precision= 4):
         
+        self._p = points
+        self.resolution = resolution
+        self.precision = precision
+        self._p_amount = len(self._p)
+
+
+
+    def set(self, points, resolution, precision):
+
         self._p = points
         self.resolution = resolution
         self.precision = precision
