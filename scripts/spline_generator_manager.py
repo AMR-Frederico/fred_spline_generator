@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from spline_source.spline.spline import Spline2D
 import rospy
 from std_msgs.msg import Bool
@@ -21,9 +21,9 @@ class Generator:
     def generate_spline(self, msg):
 
         # load from rosparam
-        ctrl_points = rospy.get_param("/spline_generator/ctrl_points")
-        curve_resolution = rospy.get_param("/spline_generator/config/curve/resolution")
-        curve_precision = rospy.get_param("/spline_generator/config/curve/precision")
+        ctrl_points = rospy.get_param("/fred_spline_generator/ctrl_points")
+        curve_resolution = rospy.get_param("/fred_spline_generator/config/curve/resolution")
+        curve_precision = rospy.get_param("/fred_spline_generator/config/curve/precision")
 
         self.spline.set(ctrl_points, curve_resolution, curve_precision)
         self.spline.calculate()
@@ -141,7 +141,7 @@ class Generator:
 if __name__ == "__main__":
 
 
-    rospy.init_node('spline_generator')
+    rospy.init_node('fred_spline_generator')
     
     generator = Generator()
 
