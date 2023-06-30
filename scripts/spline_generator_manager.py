@@ -16,7 +16,7 @@ class Generator:
         self.pub_ctrl_points_pose = rospy.Publisher("spline_generator/out/ctrl_points_pose", PoseArray, queue_size=10)
         self.pub_path = rospy.Publisher("spline_generator/out/path", Path, queue_size=10)
         self.sub_cmd_generate_spline = rospy.Subscriber('spline_generator/cmd/generate_spline', Bool, self.generate_spline)
-
+       
 
     def generate_spline(self, msg):
 
@@ -144,5 +144,6 @@ if __name__ == "__main__":
     rospy.init_node('fred_spline_generator')
     
     generator = Generator()
+    
 
     rospy.spin()
