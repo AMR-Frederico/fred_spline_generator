@@ -140,10 +140,18 @@ class Generator:
 
 if __name__ == "__main__":
 
-
     rospy.init_node('fred_spline_generator')
+    rate = rospy.Rate(1)
     
     generator = Generator()
+    generator.generate_spline(True)
+
+    while not rospy.is_shutdown():
+            generator.publish_path()
+            
+            rate.sleep()
+
+    
     
 
-    rospy.spin()
+   
