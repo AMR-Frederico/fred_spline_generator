@@ -13,6 +13,7 @@ class Generator:
 
         self.spline = Spline2D()
         self.pub_points = rospy.Publisher("spline_generator/out/points", Polygon, queue_size=10)
+        self.pub_points_cur = rospy.Publisher("spline_generator/out/points_curvature", Polygon, queue_size=10) # (x, y, curvature)
         self.pub_ctrl_points_pose = rospy.Publisher("spline_generator/out/ctrl_points_pose", PoseArray, queue_size=10)
         self.pub_path = rospy.Publisher("spline_generator/out/path", Path, queue_size=10)
         self.sub_cmd_generate_spline = rospy.Subscriber('spline_generator/cmd/generate_spline', Bool, self.generate_spline)
@@ -87,6 +88,17 @@ class Generator:
 
 
         pol = self.spline_points_to_ROS_polygon(self.spline.points_spline)
+        
+        msg = pol
+
+        self.pub_points.publish(msg)
+    
+
+
+    def publish_points_cur(self):
+
+
+        pol = self.spline_points_to_ROS_polygon(self.spline.points)
         
         msg = pol
 

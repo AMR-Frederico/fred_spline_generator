@@ -1,3 +1,5 @@
+import time
+
 '''p = algarismos significativos'''
 class Jacobi:
 
@@ -47,6 +49,8 @@ class Jacobi:
  
                     if(self.diag[li] != 0):
                         b[li][col] = -self.b[li][col]/self.diag[li]
+                time.sleep(0.05)
+                
  
         self.b = b
     

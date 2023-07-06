@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>spline_generator</name>
+  <name>fred_spline_generator</name>
   <version>0.0.0</version>
   <description>The spline_generator package</description>
 

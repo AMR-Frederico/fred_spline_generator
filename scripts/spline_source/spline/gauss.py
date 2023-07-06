@@ -1,3 +1,5 @@
+import time
+
 class Gauss:
 
     def __init__(self, m, y, precision = 4):
@@ -129,6 +131,9 @@ class Gauss:
                 pivot_index = pivot_index + 1
 
             last_pivot_index = pivot_index
+
+            time.sleep(0.1)
+
 
     
     def _retroactive_resolution(self):
