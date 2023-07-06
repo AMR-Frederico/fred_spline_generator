@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from spline_source.spline.spline import Spline2D
 import rospy
 from std_msgs.msg import Bool
@@ -17,14 +17,14 @@ class Generator:
         self.pub_ctrl_points_pose = rospy.Publisher("spline_generator/out/ctrl_points_pose", PoseArray, queue_size=10)
         self.pub_path = rospy.Publisher("spline_generator/out/path", Path, queue_size=10)
         self.sub_cmd_generate_spline = rospy.Subscriber('spline_generator/cmd/generate_spline', Bool, self.generate_spline)
-
+       
 
     def generate_spline(self, msg):
 
         # load from rosparam
-        ctrl_points = rospy.get_param("/spline_generator/ctrl_points")
-        curve_resolution = rospy.get_param("/spline_generator/config/curve/resolution")
-        curve_precision = rospy.get_param("/spline_generator/config/curve/precision")
+        ctrl_points = rospy.get_param("/fred_spline_generator/ctrl_points")
+        curve_resolution = rospy.get_param("/fred_spline_generator/config/curve/resolution")
+        curve_precision = rospy.get_param("/fred_spline_generator/config/curve/precision")
 
         self.spline.set(ctrl_points, curve_resolution, curve_precision)
         self.spline.calculate()
@@ -152,9 +152,18 @@ class Generator:
 
 if __name__ == "__main__":
 
-
-    rospy.init_node('spline_generator')
+    rospy.init_node('fred_spline_generator')
+    rate = rospy.Rate(1)
     
     generator = Generator()
+    generator.generate_spline(True)
 
-    rospy.spin()
+    while not rospy.is_shutdown():
+            generator.publish_path()
+            
+            rate.sleep()
+
+    
+    
+
+   

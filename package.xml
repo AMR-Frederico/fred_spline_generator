@@ -2,7 +2,7 @@
 <package format="2">
   <name>fred_spline_generator</name>
   <version>0.0.0</version>
-  <description>The spline_generator package</description>
+  <description>The fred_spline_generator package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

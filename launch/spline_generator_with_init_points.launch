@@ -1,6 +1,6 @@
 <launch>
-    <node pkg="tf" type="static_transform_publisher" name="tf_fixed" args="1 0 0 0 0 0 1 map ref 100" />
-    <node name="spline_generator" pkg="fred_spline_generator" type="spline_generator_manager.py" output="screen">
+    <node pkg="tf" type="static_transform_publisher" name="tf_fixed" args="1 0 0 0 0 0 1 map odom 100" />
+    <node name="fred_spline_generator" pkg="fred_spline_generator" type="spline_generator_manager.py" output="screen">
 
         <rosparam command="load" file="$(find fred_spline_generator)/data/ctrl_points/active_ctrl_points.yaml"/>
         <rosparam command="load" file="$(find fred_spline_generator)/launch/config.yaml"/>
