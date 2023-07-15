@@ -141,7 +141,7 @@ class Generator:
 if __name__ == "__main__":
 
     rospy.init_node('fred_spline_generator')
-    rate = rospy.Rate(1)
+    rate = rospy.Rate(0.5)
     
     generator = Generator()
     generator.generate_spline(True)
