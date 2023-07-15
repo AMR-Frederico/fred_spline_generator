@@ -3,31 +3,56 @@ from spline_source.spline.spline import Spline2D
 import rospy
 from std_msgs.msg import Bool
 from geometry_msgs.msg import Polygon, Point32, PoseStamped, PoseArray, Pose
+from fred_spline_generator.msg import Config
 from nav_msgs.msg import Path
 import tf
 import math
+import yaml
+
+
 
 class Generator:
 
     def __init__(self):
 
         self.spline = Spline2D()
-        self.pub_points = rospy.Publisher("spline_generator/out/points", Polygon, queue_size=10)
-        self.pub_points_cur = rospy.Publisher("spline_generator/out/points_curvature", Polygon, queue_size=10) # (x, y, curvature)
-        self.pub_ctrl_points_pose = rospy.Publisher("spline_generator/out/ctrl_points_pose", PoseArray, queue_size=10)
-        self.pub_path = rospy.Publisher("spline_generator/out/path", Path, queue_size=10)
-        self.sub_cmd_generate_spline = rospy.Subscriber('spline_generator/cmd/generate_spline', Bool, self.generate_spline)
-       
+
+        self.rosparam_path = ""
+        self.spline_name = "service_spline"
+        
+        self.pub_points = rospy.Publisher("fred_spline_generator/service/out/points", Polygon, queue_size=10)
+        self.pub_ctrl_points_pose = rospy.Publisher("fred_spline_generator/service/out/ctrl_points_pose", PoseArray, queue_size=10)
+        self.pub_path = rospy.Publisher("fred_spline_generator/service/out/path", Path, queue_size=10)
+        self.sub_par_config_spline = rospy.Subscriber('fred_spline_generator/service/par/config', Config, self.config)
+        self.sub_cmd_generate_spline = rospy.Subscriber('fred_spline_generator/service/cmd/generate_spline', Bool, self.generate_spline)
+    
+
+    def config(self, msg):
+
+        self.rosparam_path = msg.RosparamCtrlPointsPath
+        # self.spline_name   = msg.SplineName
+
+
 
     def generate_spline(self, msg):
 
+
         # load from rosparam
-        ctrl_points = rospy.get_param("/fred_spline_generator/ctrl_points")
+        ctrl_points = rospy.get_param(f"/fred_spline_generator/{self.rosparam_path}/ctrl_points")
+        print(ctrl_points)
         curve_resolution = rospy.get_param("/fred_spline_generator/config/curve/resolution")
         curve_precision = rospy.get_param("/fred_spline_generator/config/curve/precision")
 
+
+        
+
+
         self.spline.set(ctrl_points, curve_resolution, curve_precision)
         self.spline.calculate()
+
+        print(yaml.dump(ctrl_points))
+        rospy.set_param(f'/fred_spline_generator/save/{self.rosparam_path}/points', yaml.dump(ctrl_points))
+        rospy.set_param(f'/fred_spline_generator/save/{self.rosparam_path}/ctrl_points', yaml.dump(self.spline.points_spline))
 
         self.publish_points()
         self.publish_path()
@@ -152,16 +177,20 @@ class Generator:
 
 if __name__ == "__main__":
 
-    rospy.init_node('fred_spline_generator')
-    rate = rospy.Rate(0.5)
+    rospy.init_node('fred_spline_generator_service')
+    rate = rospy.Rate(1)
     
     generator = Generator()
-    generator.generate_spline(True)
+    print("start ----------")
+    
+    rospy.spin()
+    
+    # generator.generate_spline(True)
 
-    while not rospy.is_shutdown():
-            generator.publish_path()
+    # while not rospy.is_shutdown():
+    #         generator.publish_path()
             
-            rate.sleep()
+    #         rate.sleep()
 
     
     

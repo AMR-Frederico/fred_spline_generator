@@ -57,6 +57,7 @@
 
 from .gauss import Gauss
 import numpy as np
+import math
 
 class Spline2D:
 
@@ -104,18 +105,35 @@ class Spline2D:
 
         self.points_spline_x = sx.points_spline_y
         self.points_spline_y = sy.points_spline_y
+        self.points_spline_cur_x = sx.points_spline_cur
+        self.points_spline_cur_y = sy.points_spline_cur
+        self.points_spline_cur = []
 
         self.points_spline = []
         self.points_spline_x_indexed = []
         self.points_spline_y_indexed = []
-
+        self.points_spline_with_curvature = []
+        self.points_spline_t = []
+        
         for i in range(len(self.points_spline_x)):
             
             y = self.points_spline_y[i]
             x = self.points_spline_x[i]
 
+            self.points_spline_t.append(i)
+                
+            cur_x = sx.points_spline_with_curvature[i][2]
+            cur_y = sy.points_spline_with_curvature[i][2]
+            cur = math.sqrt(cur_x**2 + cur_y**2)
+            # cur = cur_x + cur_y
+
+
             self.points_spline_x_indexed.append([i, x])
             self.points_spline_y_indexed.append([i, y])
+
+            self.points_spline_cur.append(cur)
+
+            self.points_spline_with_curvature.append([x, y, cur])
             self.points_spline.append([x, y])
 
 
@@ -281,8 +299,10 @@ class Spline:
         pn = self._p[self._p_amount-1]
 
         self.points_spline = []
+        self.points_spline_with_curvature = []
         self.points_spline_x = []
         self.points_spline_y = []
+        self.points_spline_cur = []
         
         for p_index in range(self._p_amount -1):
 
@@ -290,11 +310,14 @@ class Spline:
 
                 x = i
                 y = sol[p_index][0] + sol[p_index][1]*i + sol[p_index][2]*i**2 + sol[p_index][3]*i**3
+                cur = 2*sol[p_index][2] + 6*sol[p_index][3]*i
 
                 self.points_spline_x.append(x)
                 self.points_spline_y.append(y)
+                self.points_spline_cur.append(cur)
 
                 self.points_spline.append([x, y])
+                self.points_spline_with_curvature.append([x, y, cur])
 
 
 
