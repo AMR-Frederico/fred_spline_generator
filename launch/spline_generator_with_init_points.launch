@@ -11,7 +11,12 @@
     <node name="fred_spline_generator" pkg="fred_spline_generator" type="spline_generator_service.py" output="screen">
 
         <rosparam command="load" file="$(find fred_spline_generator)/launch/config.yaml"/>
+        <rosparam command="load" file="$(find fred_spline_generator)/data/ctrl_points/active_ctrl_points.yaml" ns="/fred_spline_generator/mission1" />
+
 
     </node>
+
+    <node pkg="rostopic" type="rostopic" name="pub_config" args="pub /fred_spline_generator/service/par/config fred_spline_generator/Config '{RosparamCtrlPointsPath: mission1}'" />
+
           
 </launch>
