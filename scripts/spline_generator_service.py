@@ -20,7 +20,7 @@ class Generator:
         self.rosparam_path = ""
         self.spline_name = "service_spline"
         
-        self.pub_points = rospy.Publisher("fred_spline_generator/service/out/points", Polygon, queue_size=10)
+        self.pub_points = rospy.Publisher("fred_spline_generator/service/out/points", PoseArray, queue_size=10)
         self.pub_ctrl_points_pose = rospy.Publisher("fred_spline_generator/service/out/ctrl_points_pose", PoseArray, queue_size=10)
         self.pub_path = rospy.Publisher("fred_spline_generator/service/out/path", Path, queue_size=10)
         self.sub_par_config_spline = rospy.Subscriber('fred_spline_generator/service/par/config', Config, self.config)
@@ -39,7 +39,7 @@ class Generator:
 
         # load from rosparam
         ctrl_points = rospy.get_param(f"/fred_spline_generator/{self.rosparam_path}/ctrl_points")
-        print(ctrl_points)
+        
         curve_resolution = rospy.get_param("/fred_spline_generator/config/curve/resolution")
         curve_precision = rospy.get_param("/fred_spline_generator/config/curve/precision")
 
@@ -74,6 +74,37 @@ class Generator:
             pol.points.append(p)
 
         return pol
+    
+
+    def spline_points_to_pose_array(self, spoints):
+        
+
+        arr = PoseArray()
+
+        arr.header.frame_id = "map"
+        arr.header.stamp = rospy.Time.now()
+
+        for sp in spoints:
+
+            p = Pose()
+
+            p.position.x = sp[0]
+            p.position.y = sp[1]
+            p.position.z = 0
+
+            quat = tf.transformations.quaternion_from_euler(
+                0, 0, -math.radians(0))
+
+            p.orientation.x = quat[0]
+            p.orientation.y = quat[1]
+            p.orientation.z = quat[2]
+            p.orientation.w = quat[3]
+
+
+
+            arr.poses.append(p)
+
+        return arr
     
 
 
@@ -112,7 +143,8 @@ class Generator:
     def publish_points(self):
 
 
-        pol = self.spline_points_to_ROS_polygon(self.spline.points_spline)
+        # pol = self.spline_points_to_ROS_polygon(self.spline.points_spline)
+        pol = self.spline_points_to_pose_array(self.spline.points_spline)
         
         msg = pol
 
@@ -120,14 +152,14 @@ class Generator:
     
 
 
-    def publish_points_cur(self):
+    # def publish_points_cur(self):
 
 
-        pol = self.spline_points_to_ROS_polygon(self.spline.points)
+    #     pol = self.spline_points_to_ROS_polygon(self.spline.points)
         
-        msg = pol
+    #     msg = pol
 
-        self.pub_points.publish(msg)
+    #     self.pub_points.publish(msg)
     
 
 
