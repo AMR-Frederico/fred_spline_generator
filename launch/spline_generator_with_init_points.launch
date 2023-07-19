@@ -16,7 +16,7 @@
 
     </node>
 
-    <node pkg="rostopic" type="rostopic" name="pub_config" args="pub /fred_spline_generator/service/par/config fred_spline_generator/Config '{RosparamCtrlPointsPath: mission1}'" />
+    <node pkg="rostopic" type="rostopic" name="pub_config" args="pub /fred_spline_generator/service/par/config fred_spline_generator/Config '{RosparamCtrlPointsPath: global}'" />
 
           
 </launch>
