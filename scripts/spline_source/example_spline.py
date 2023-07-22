@@ -43,7 +43,7 @@ p = [a, b, c, d, e, f, g]
 # sx.calculate()
 # sy.calculate()
 
-s = Spline2D(p, 0.2, 1)
+s = Spline2D(p, 0.5, 0.01, 1)
 s.calculate()
 
 # print(len(sx.points_spline_y))

@@ -61,19 +61,21 @@ import math
 
 class Spline2D:
 
-    def __init__(self, points=[], resolution=0.01, precision= 4):
+    def __init__(self, points=[], resolution=0.01, sample_resolution = 0.01, precision= 4):
         
         self._p = points
-        self.resolution = resolution/10
+        self.resolution = resolution
+        self.sample_resolution = sample_resolution
         self.precision = precision
         self._p_amount = len(self._p)
 
 
 
-    def set(self, points, resolution, precision):
+    def set(self, points, resolution, sample_resolution, precision):
 
         self._p = points
         self.resolution = resolution
+        self.sample_resolution = sample_resolution
         self.precision = precision
         self._p_amount = len(self._p)
 
@@ -97,19 +99,21 @@ class Spline2D:
 
         self._split_points()
         
-        sx = Spline(self.xt, self.resolution, self.precision)
-        sy = Spline(self.yt, self.resolution, self.precision)
+        sx = Spline(self.xt, self.sample_resolution, self.precision)
+        sy = Spline(self.yt, self.sample_resolution, self.precision)
 
         sx.calculate()
         sy.calculate()
 
-        self.points_spline_x = sx.points_spline_y
-        self.points_spline_y = sy.points_spline_y
+        self.sample_points_spline_x = sx.points_spline_y
+        self.sample_points_spline_y = sy.points_spline_y
         self.points_spline_cur_x = sx.points_spline_cur
         self.points_spline_cur_y = sy.points_spline_cur
         self.points_spline_cur = []
 
         self.points_spline = []
+        self.points_spline_x = []
+        self.points_spline_y = []
         self.points_spline_x_indexed = []
         self.points_spline_y_indexed = []
         self.points_spline_with_curvature = []
@@ -118,10 +122,10 @@ class Spline2D:
 
         accept_point_by_distance_offset = 0
         last_accepted_point = []
-        for i in range(len(self.points_spline_x)):
+        for i in range(len(self.sample_points_spline_x)):
             
-            y = self.points_spline_y[i]
-            x = self.points_spline_x[i]
+            y = self.sample_points_spline_y[i]
+            x = self.sample_points_spline_x[i]
 
             self.points_spline_t.append(i)
                 
@@ -141,7 +145,9 @@ class Spline2D:
 
             # accept by distance
             if v_len >= self.resolution or i == 0:
-
+                
+                self.points_spline_x.append(x)
+                self.points_spline_y.append(y)
 
                 self.points_spline_x_indexed.append([i, x])
                 self.points_spline_y_indexed.append([i, y])
@@ -151,6 +157,7 @@ class Spline2D:
                 self.points_spline_with_curvature.append([x, y, cur])
                 self.points_spline.append([x, y])
                 last_accepted_point = [x, y]
+                # print(f"len: {v_len}")
 
 
 

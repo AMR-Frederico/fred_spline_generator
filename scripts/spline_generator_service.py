@@ -41,13 +41,14 @@ class Generator:
         ctrl_points = rospy.get_param(f"/fred_spline_generator/{self.rosparam_path}/ctrl_points")
         
         curve_resolution = rospy.get_param("/fred_spline_generator/config/curve/resolution")
+        curve_sample_resolution = rospy.get_param("/fred_spline_generator/config/curve/sample_resolution")
         curve_precision = rospy.get_param("/fred_spline_generator/config/curve/precision")
 
 
         
 
 
-        self.spline.set(ctrl_points, curve_resolution, curve_precision)
+        self.spline.set(ctrl_points, curve_resolution, curve_sample_resolution, curve_precision)
         self.spline.calculate()
 
         print(yaml.dump(ctrl_points))

@@ -1,5 +1,15 @@
 config:
   curve: 
-    # resolution: 0.001
-    resolution: 0.1 # points/meter
-    precision: 10
+    # resolution = distância entre os pontos do spline
+    resolution: 0.5 # meters/point
+
+    # sample resolution:
+    # (resolução dos pontos que vão ser selecionados pela resolução da curva) 
+    # Isso evita que o spline não passe por algum ponto de controle, 
+    # isso é, CASO O SPLINE ESTEJA BOM PORÉM NÃO ESTEJA PASSANDO PRÓXIMO O SUFICIENTE DO PONTO DE CONTROLE, DIMINUA O SAMPLE 
+    # deafult: 0.01
+    sample_resolution: 0.01 # meters/point 
+    
+    # precision: algoritmo interno, precisão de aceitação da solução do spline, se menor, mais erro porém mais rápido
+    # default = 4 (ideal que não se altere)
+    precision: 4 # decimal points
