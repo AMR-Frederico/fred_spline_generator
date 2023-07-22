@@ -43,7 +43,7 @@ p = [a, b, c, d, e, f, g]
 # sx.calculate()
 # sy.calculate()
 
-s = Spline2D(p, 0.01, 1)
+s = Spline2D(p, 0.2, 1)
 s.calculate()
 
 # print(len(sx.points_spline_y))
@@ -54,7 +54,7 @@ plt.scatter(s.points_spline_x, s.points_spline_y, s=2)
 # plt.scatter(s.points_spline_t, s.points_spline_x, s=2)
 # plt.scatter(s.points_spline_t, s.points_spline_y, s=2)
 # plt.scatter(s.points_spline_t, s.points_spline_cur_y, s=2)
-plt.scatter(s.points_spline_x, s.points_spline_cur, s=2)
+# plt.scatter(s.points_spline_x, s.points_spline_cur, s=2)
 # plt.scatter(s.points_spline_x, s.points_spline_cur_x, s=2)
 # plt.scatter(s.points_spline_t, s.points_spline_cur_x, s=2)
 # plt.scatter(s.points_spline_x, s.points_spline_cur_y, s=2)

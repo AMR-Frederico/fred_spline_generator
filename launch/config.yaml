@@ -1,4 +1,5 @@
 config:
   curve: 
-    resolution: 0.001
+    # resolution: 0.001
+    resolution: 0.1 # points/meter
     precision: 10
