@@ -82,7 +82,7 @@ class Generator:
 
         arr = PoseArray()
 
-        arr.header.frame_id = "joana"
+        arr.header.frame_id = "map"
         arr.header.stamp = rospy.Time.now()
 
         for sp in spoints:
@@ -113,7 +113,7 @@ class Generator:
 
         arr = PoseArray()
 
-        arr.header.frame_id = "joana"
+        arr.header.frame_id = "map"
         arr.header.stamp = rospy.Time.now()
 
         for sp in points:
@@ -192,7 +192,7 @@ class Generator:
 
             path.poses.append(p)
         path.header.stamp = rospy.Time.now()
-        path.header.frame_id = "joana"
+        path.header.frame_id = "map"
 
         return path
 
