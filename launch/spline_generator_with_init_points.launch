@@ -1,6 +1,7 @@
 <launch>
     <node pkg="tf" type="static_transform_publisher" name="tf_fixed" args="1 0 0 0 0 0 1 map odom 100" />
     <node pkg="tf" type="static_transform_publisher" name="tf_joana" args="0 0 0 0 0 1 0 map joana 100" />
+
     <!-- old spline -->
     <!-- <node name="fred_spline_generator" pkg="fred_spline_generator" type="spline_generator_manager.py" output="screen">
 
